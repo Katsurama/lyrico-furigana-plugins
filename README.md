@@ -59,7 +59,9 @@
 
 ## 反馈
 
-如有问题，请通过 [Issues](https://github.com/Katsurama/lyrico-furigana-plugins/issues) 联系。
+如有问题，请通过 [Issues](https://github.com/Katsurama/lyrico-furigana-plugins/issues) 联系，也可以来 Discord 交流。
+
+<a href="https://discord.gg/VUne62RvrJ"><img src="https://img.shields.io/badge/Discord-%E5%8A%A0%E5%85%A5%E4%BA%A4%E6%B5%81-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="加入 Discord" height="40"></a>
 
 ## ☕ 支持作者
 
