@@ -24,6 +24,12 @@ var Furigana = (function() {
     "ぉ": ["ぉ", "お", ""]
   };
 
+  function hiraToKata(text) {
+    return String(text || "").replace(/[ぁ-ゖ]/g, function(ch) {
+      return String.fromCharCode(ch.charCodeAt(0) + 0x60);
+    });
+  }
+
   function kataToHira(text) {
     return String(text || "").replace(/[ァ-ヶ]/g, function(ch) {
       return String.fromCharCode(ch.charCodeAt(0) - 0x60);
@@ -39,6 +45,7 @@ var Furigana = (function() {
   }
 
   const DIGIT_RE = /[0-9０-９]/;
+  const SYMBOL_RE = /[+＋]/;
   const MARK_NEIGHBOR_RE = /[A-Za-z×＊*#＃]/;
 
   const INLINE_READING_RE = /^[(（]\s*[ぁ-ゖァ-ヶー]+(?:\s+[ぁ-ゖァ-ヶー]+)*\s*[)）]/;
@@ -137,6 +144,14 @@ var Furigana = (function() {
             (j < value.length && MARK_NEIGHBOR_RE.test(value.charAt(j)));
           if (!isMark) tokens.push({ kind: "kanji", digit: true, word: wordIndex, start: i, end: j });
           i = j;
+          continue;
+        }
+        if (SYMBOL_RE.test(ch)) {
+          const isMark = ignoreDigits ||
+            (i > 0 && MARK_NEIGHBOR_RE.test(value.charAt(i - 1))) ||
+            (i + 1 < value.length && MARK_NEIGHBOR_RE.test(value.charAt(i + 1)));
+          if (!isMark) tokens.push({ kind: "kanji", digit: true, symbol: true, word: wordIndex, start: i, end: i + 1 });
+          i++;
           continue;
         }
         if (KANA_CHAR_RE.test(ch) && (whole.charAt(base + i + 1) === "\u3099" || whole.charAt(base + i + 1) === "\u309A")) {
@@ -627,6 +642,7 @@ var Furigana = (function() {
 
   function isPureDigitToken(token, texts) {
     if (!token.digit) return false;
+    if (token.symbol) return true;
     if (token.end - token.start >= 3) return true;
     const whole = texts.join("");
     let base = 0;
@@ -639,13 +655,37 @@ var Furigana = (function() {
     return !((before >= 0 && unit.test(whole.charAt(before))) || (after < whole.length && unit.test(whole.charAt(after))));
   }
 
+  function stripVoicing(text) {
+    return String(text || "")
+      .replace(/[ァ-ヶ]/g, function(c) { return String.fromCharCode(c.charCodeAt(0) - 0x60); })
+      .normalize("NFD").replace(/[゙゚]/g, "");
+  }
+
+  const NUMERAL_PARTS = ["いち", "いっ", "に", "さん", "し", "よん", "よ", "ご", "ろく", "ろっ", "しち", "なな", "はち", "はっ",
+    "きゅう", "く", "じゅう", "じゅっ", "じっ", "れい", "ぜろ", "まる", "ひゃく", "ひゃっ", "せん", "まん", "おく", "ちょう"].map(stripVoicing);
+
+  function regularNumeralReading(reading) {
+    const text = stripVoicing(reading);
+    if (!text) return false;
+    const reach = [true];
+    for (let i = 1; i <= text.length; i++) {
+      reach[i] = false;
+      for (let p = 0; p < NUMERAL_PARTS.length && !reach[i]; p++) {
+        const part = NUMERAL_PARTS[p];
+        if (part.length <= i && reach[i - part.length] && text.substr(i - part.length, part.length) === part) reach[i] = true;
+      }
+    }
+    return reach[text.length];
+  }
+
   function plainDakuten(text) {
     return String(text).replace(/づ/g, "ず").replace(/ぢ/g, "じ");
   }
 
   function digitReading(token, texts, reading) {
     if (!reading) return reading;
-    if (token.digit) return !pureDigitRuby && isPureDigitToken(token, texts) ? "" : reading;
+    if (token.symbol) return pureDigitRuby ? hiraToKata(reading) : "";
+    if (token.digit) return !pureDigitRuby && (isPureDigitToken(token, texts) || regularNumeralReading(reading)) ? "" : reading;
     const base = String(texts[token.word] || "").slice(token.start, token.end);
     const list = base.length === 1 ? KANJI_READINGS[base] : null;
     if (!list || list.indexOf(reading) >= 0) return reading;
@@ -781,7 +821,9 @@ var Furigana = (function() {
     const perWord = texts.map(function() { return []; });
     tokens.forEach(function(token, index) {
       if (token.kind !== "kanji") return;
-      perWord[token.word].push({ token: token, reading: token.inline ? "" : digitReading(token, texts, aligned.readings[index] || "") });
+      const raw = aligned.readings[index] || "";
+      const shown = token.inline ? "" : digitReading(token, texts, raw);
+      perWord[token.word].push({ token: token, reading: shown, plainDigit: token.digit && !!raw && !shown });
     });
 
     if (parensIgnored) copyEchoReadings(texts, whole, ranges, tokens, aligned, perWord);
@@ -790,7 +832,7 @@ var Furigana = (function() {
       if (!Array.isArray(word) || wordHasRuby(word) || !perWord[index].length) return [cloneWord(word)];
       const hasReading = perWord[index].some(function(item) { return !!item.reading; });
       if (!hasReading) {
-        const onlyPureDigits = perWord[index].every(function(item) { return item.token.inline || (item.token.digit && !pureDigitRuby && isPureDigitToken(item.token, texts)); });
+        const onlyPureDigits = perWord[index].every(function(item) { return item.token.inline || item.plainDigit || (item.token.digit && !pureDigitRuby && isPureDigitToken(item.token, texts)); });
         return onlyPureDigits ? [cloneWord(word)] : null;
       }
       return segmentsToWords(word, segmentsFromAlignment(texts[index], perWord[index]));

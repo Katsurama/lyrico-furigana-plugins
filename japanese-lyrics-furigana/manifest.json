@@ -1,8 +1,8 @@
 {
   "id": "com.lyrics.source.japanese.furigana",
   "name": "@plugin.name",
-  "versionCode": 47,
-  "versionName": "0.6.3",
+  "versionCode": 48,
+  "versionName": "0.6.4",
   "author": "Replica0110",
   "description": "@plugin.description",
   "apiVersion": 5,

@@ -403,7 +403,9 @@ function lyricsMerge(originalLines, transLines) {
         break;
       }
 
-      matchedText = compactWordsText(trans[2]);
+      // QQ 用 "//" 表示这行没有翻译
+      const text = compactWordsText(trans[2]);
+      matchedText = text.trim() === "//" ? "" : text;
       transIdx++;
       break;
     }
