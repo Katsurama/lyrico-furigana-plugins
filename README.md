@@ -30,14 +30,6 @@
 - **要在 Lyrico 的「歌词模式」里选 TTML，才会带上振假名**
 - **歌词显示需要支持 TTML 歌词的播放器**
 
-## ☕ 支持作者
-
-> [!TIP]
-> **喜欢这个插件？**<br>
-> 如果它帮到了你，可以在爱发电请我喝杯咖啡，支持我继续更新 ❤️
->
-> <a href="https://afdian.com/a/katsurama"><img src="https://img.shields.io/badge/%E2%98%95%20%E5%9C%A8%E7%88%B1%E5%8F%91%E7%94%B5%E6%94%AF%E6%8C%81%E6%88%91-946ce6?style=for-the-badge" alt="在爱发电支持我" height="40"></a>
-
 ## 注音原理
 
 读音只取自平台自带的罗马音，转成平假名后，和原文里的假名对齐，汉字夹在中间的部分就是它的读音。不用词典。
@@ -68,6 +60,14 @@
 ## 反馈
 
 如有问题，请通过 [Issues](https://github.com/Katsurama/lyrico-furigana-plugins/issues) 联系。
+
+## ☕ 支持作者
+
+> [!TIP]
+> **喜欢这个插件？**<br>
+> 如果它帮到了你，可以在爱发电请我喝杯咖啡，支持我继续更新 ❤️
+>
+> <a href="https://afdian.com/a/katsurama"><img src="https://img.shields.io/badge/%E2%98%95%20%E5%9C%A8%E7%88%B1%E5%8F%91%E7%94%B5%E6%94%AF%E6%8C%81%E6%88%91-946ce6?style=for-the-badge" alt="在爱发电支持我" height="40"></a>
 
 ## 致谢
 
