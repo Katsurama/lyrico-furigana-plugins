@@ -83,6 +83,12 @@
 
 ---
 
+### 💖 赞助者
+
+**特别鸣谢**：虚位以待
+
+**感谢名单**：虚位以待，成为第一位支持者 ☕
+
 ## 致谢
 
 - 插件的基础代码来自 Replica0110 的 [Lyrico-Plugins](https://github.com/Replica0110/Lyrico-Plugins)。
