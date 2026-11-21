@@ -73,6 +73,7 @@
 <h1>☕ 喜欢这个插件？请我喝杯咖啡吧</h1>
 如果它帮到了你，你的支持会让我继续更新下去 ❤️
 <br><br>
+<a href="https://github.com/sponsors/Katsurama"><img src="https://img.shields.io/badge/%F0%9F%92%96%20%E5%96%9C%E6%AC%A2%E8%BF%99%E4%B8%AA%E9%A1%B9%E7%9B%AE%EF%BC%9F-%E5%9C%A8%20GitHub%20Sponsors%20%E6%94%AF%E6%8C%81%E6%88%91%20%E2%86%92-ea4aaa?style=for-the-badge&labelColor=3b1d2e&logo=githubsponsors&logoColor=white" alt="在 GitHub Sponsors 支持我" height="80"></a><br><br>
 <a href="https://afdian.com/a/katsurama"><img src="https://img.shields.io/badge/%E2%98%95%20%E5%96%9C%E6%AC%A2%E8%BF%99%E4%B8%AA%E9%A1%B9%E7%9B%AE%EF%BC%9F-%E5%9C%A8%E7%88%B1%E5%8F%91%E7%94%B5%E6%94%AF%E6%8C%81%E6%88%91%20%E2%86%92-946ce6?style=for-the-badge&labelColor=2d2640" alt="在爱发电支持我" height="80"></a><br><br>
 或者用微信扫码赞赏
 <br>
